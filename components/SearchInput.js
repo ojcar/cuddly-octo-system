@@ -1,12 +1,18 @@
 import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
+import PropTypes from 'prop-types';
 
 export default class SearchInput extends React.Component {
+  static defaultProps = {
+    placeholder: ''
+  }
+
+  state = {
+    text: ''
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      text: ''
-    }
   }
 
   handleChangeText = (text) => {
@@ -43,6 +49,15 @@ export default class SearchInput extends React.Component {
   }
 }
 
+SearchInput.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  placeholder: PropTypes.string
+}
+
+//  Can also use "static" definition above for propTypes
+// SearchInput.defaultProps = {
+//   placeholder: ''
+// }
 
 const styles = StyleSheet.create({ 
   container: {
