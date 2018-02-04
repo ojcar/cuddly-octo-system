@@ -31,6 +31,41 @@ export default class App extends React.Component {
     this.handleUpdateLocation('San Francisco');
   }
 
+  renderContent() {
+    const { error } = this.state;
+
+    return (
+      <View>
+        {error && this.renderError()}
+        {!error && this.renderData()}
+      </View>
+    );
+  }
+
+  renderError() {
+    const { error } = this.state;
+
+    return (
+      <Text style={[styles.smallText, styles.textStyle]}>
+        {error}
+      </Text>
+    )
+  }
+
+  renderData() {
+    const { location, weather, temperature } = this.state;
+
+    return (
+      <View>
+        <Text style={[styles.largeText, styles.textStyle]}>{location}</Text>
+        <Text style={[styles.smallText, styles.textStyle]}>{weather}</Text>
+        <Text style={[styles.largeText, styles.textStyle]}>
+          {`${Math.round(temperature)}°`}
+        </Text>
+      </View>
+    )
+  }
+
   handleUpdateLocation = async city => {
     if (!city) return;
 
@@ -70,30 +105,11 @@ export default class App extends React.Component {
 
           <View style={styles.detailsContainer}>
             <ActivityIndicator animating={loading} color="white" size="large" />
+            {!loading && this.renderContent()}
 
-            {!loading && (
-              <View>
-                {error && (
-                  <Text style={[styles.smallText, styles.textStyle]}>
-                    Could not load weather, please try a different city
-                  </Text>
-                )}
-
-                {!error && (
-                  <View>
-                      <Text style={[styles.largeText, styles.textStyle]}>{location}</Text>
-                    <Text style={[styles.smallText, styles.textStyle]}>{weather}</Text>
-                    <Text style={[styles.largeText, styles.textStyle]}>
-                      {`${Math.round(temperature)}°`}
-                    </Text>
-                  </View>
-                )}
-              
-                <SearchInput 
-                  placeholder="Search any city"
-                  onSubmit={this.handleUpdateLocation} />
-              </View>
-            )}
+            <SearchInput 
+              placeholder="Search any city"
+              onSubmit={this.handleUpdateLocation} />
           </View>
         </ImageBackground>
       </KeyboardAvoidingView>
